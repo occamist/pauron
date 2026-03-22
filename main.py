@@ -242,7 +242,7 @@ def update_pkgbuild_file(file: str, new_pkgver: str, new_sha256: str, new_commit
 
 
 def update_dot_srcinfo_file(
-    file: str, new_pkgver: str, new_sha256: str, latest_tag: str
+    file: str, new_pkgver: str, new_sha256: str, owner: str, repo: str, latest_tag: str
 ):
     with open(file, "r") as f:
         content = f.read()
@@ -251,8 +251,8 @@ def update_dot_srcinfo_file(
     content = re.sub(r"pkgver = .*", f"pkgver = {new_pkgver}", content)
     content = re.sub(r"sha256sums = .*", f"sha256sums = {new_sha256}", content)
     content = re.sub(
-        r"source = k3sup-.*?\.tar\.gz::https://github\.com/alexellis/k3sup/archive/.*?\.tar\.gz",
-        f"source = k3sup-{latest_tag}.tar.gz::https://github.com/alexellis/k3sup/archive/{latest_tag}.tar.gz",
+        r"source = .*?\.tar\.gz::https://github\.com/.*?/.*?/archive/.*?\.tar\.gz",
+        f"source = {repo}-{latest_tag}.tar.gz::https://github.com/{owner}/{repo}/archive/{latest_tag}.tar.gz",
         content,
     )
 
@@ -339,7 +339,7 @@ def main():
         file = os.path.join(pkg_name, "PKGBUILD")
         update_pkgbuild_file(file, new_version, new_sha_hash, new_commit_hash)
         file = os.path.join(pkg_name, ".SRCINFO")
-        update_dot_srcinfo_file(file, new_version, new_sha_hash, latest_tag)
+        update_dot_srcinfo_file(file, new_version, new_sha_hash, owner, repo, latest_tag)
 
         ## remove
         for filename in ["PKGBUILD_old", ".SRCINFO_old"]:
