@@ -1,13 +1,13 @@
-import hashlib
-import subprocess
-import os
-import logging
-import shutil
-import re
 import argparse
+import hashlib
+import logging
+import os
+import re
+import shutil
+import subprocess
+from importlib.metadata import PackageNotFoundError, version
 
 import requests
-
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ def setup_ssh_for_aur():
     if os.path.exists(ssh_config_path):
         with open(ssh_config_path, "r") as f:
             existing_config = f.read()
-    
+
     # Only add AUR config if not already present
     if "Host aur.archlinux.org" not in existing_config:
         aur_config = f"""
@@ -241,9 +241,7 @@ def update_pkgbuild_file(file: str, new_pkgver: str, new_sha256: str, new_commit
     logger.info("PKGBUILD file was updated successfully")
 
 
-def update_dot_srcinfo_file(
-    file: str, new_pkgver: str, new_sha256: str, owner: str, repo: str, latest_tag: str
-):
+def update_dot_srcinfo_file(file: str, new_pkgver: str, new_sha256: str, owner: str, repo: str, latest_tag: str):
     with open(file, "r") as f:
         content = f.read()
 
@@ -287,12 +285,14 @@ def restore_git_config(key, value):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Update AUR package from GitHub releases"
-    )
-    parser.add_argument(
-        "--pkg-name", "-p", required=True, help="AUR package name (e.g., k3sup)"
-    )
+    try:
+        __version__ = version("pauron")
+    except PackageNotFoundError:
+        __version__ = "unknown"  # running from source without installing
+
+    parser = argparse.ArgumentParser(description="Update AUR package from GitHub releases")
+    parser.add_argument("--pkg-name", "-p", required=True, help="AUR package name (e.g., k3sup)")
+    parser.add_argument("--version", "-V", action="version", version=f"%(prog)s {__version__}")
     args = parser.parse_args()
 
     pkg_name = args.pkg_name
@@ -316,7 +316,7 @@ def main():
         current_version, new_version = metadata.get("pkgver"), latest_tag.lstrip("v")
         if new_version == current_version:
             logger.info(
-                f"Newest Github version({new_version}) and current PKGBUILD version({current_version}) are same, quitting."
+                f"Newest Github version({new_version}) and current PKGBUILD version({current_version}) are same, quitting." # noqa: E501
             )
             return
 
