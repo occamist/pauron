@@ -1,8 +1,8 @@
 # Pauron
 [![PyPI](https://img.shields.io/pypi/v/pauron)](https://pypi.org/project/pauron)
-[![CI Build](https://github.com/mrwormhole/pauron/actions/workflows/publish.yaml/badge.svg)](https://github.com/mrwormhole/pauron/actions/workflows/publish.yaml)
-[![AUR Sync Status](https://img.shields.io/github/actions/workflow/status/mrwormhole/pauron/update-aur-packages.yaml?label=Syncing%20My%20AUR)](https://github.com/mrwormhole/pauron/actions/workflows/update-aur-packages.yaml)
-[![License](https://img.shields.io/github/license/mrwormhole/pauron)](https://github.com/mrwormhole/pauron/blob/main/LICENSE)
+[![CI Build](https://github.com/occamist/pauron/actions/workflows/publish.yaml/badge.svg)](https://github.com/occamist/pauron/actions/workflows/publish.yaml)
+[![AUR Sync Status](https://img.shields.io/github/actions/workflow/status/occamist/pauron/update-aur-packages.yaml?label=Syncing%20My%20AUR)](https://github.com/occamist/pauron/actions/workflows/update-aur-packages.yaml)
+[![License](https://img.shields.io/github/license/occamist/pauron)](https://github.com/occamist/pauron/blob/main/LICENSE)
 
 
 
