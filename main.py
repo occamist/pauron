@@ -353,6 +353,24 @@ def main():
         restore_git_config("user.email", original_email)
         restore_git_config("user.name", original_name)
 
+        ssh_dir = os.path.expanduser("~/.ssh")
+
+        key_path = os.path.join(ssh_dir, "aur_key")
+        if os.path.exists(key_path):
+            os.remove(key_path)
+
+        ssh_config_path = os.path.join(ssh_dir, "config")
+        if os.path.exists(ssh_config_path):
+            with open(ssh_config_path, "r") as f:
+                config = f.read()
+            cleaned = re.sub(
+                r"\n# Added by Pauron\nHost aur\.archlinux\.org\n\s+IdentityFile [^\n]+\n",
+                "",
+                config,
+            )
+            with open(ssh_config_path, "w") as f:
+                f.write(cleaned)
+
 
 if __name__ == "__main__":
     main()
