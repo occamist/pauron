@@ -8,29 +8,7 @@ on:
   schedule:
     - cron: '0 0 1 * *'
 
-jobs:
-  update-k3sup-aur:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y python3-pip
-          pip3 install requests
-
-      - name: Update AUR package
-        env:
-          AUR_SSH_KEY: ${{ secrets.AUR_SSH_KEY }}
-        run: |
-          python main.py -p k3sup
-  
+jobs:  
   update-keyboard-app-aur:
     runs-on: ubuntu-latest
 
