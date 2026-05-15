@@ -292,7 +292,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Update AUR package from GitHub releases")
     parser.add_argument("--pkg-name", "-p", required=True, help="AUR package name (e.g., k3sup)")
-    parser.add_argument("--version", "-V", action="version", version=f"%(prog)s {__version__}")
+    parser.add_argument("--version", "-v", action="version", version=f"%(prog)s {__version__}")
     args = parser.parse_args()
 
     pkg_name = args.pkg_name
