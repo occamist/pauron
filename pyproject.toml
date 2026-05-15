@@ -1,6 +1,6 @@
 [project]
 name = "pauron"
-version = "0.1.4"
+dynamic = ["version"]
 description = "AUR Automation Bot"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -13,6 +13,12 @@ pauron = "main:main"
 
 [tool.setuptools]
 py-modules = ["main"]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
 
 [dependency-groups]
 dev = ["ruff>=0.15.7"]
