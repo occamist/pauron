@@ -177,7 +177,7 @@ def display_metadata(metadata):
         logger.info(f"  {key}: {value}")
 
 
-def get_latest_github_release_tag(owner: str, repo: str):
+def get_latest_github_release_tag(owner: str, repo: str) -> str | None:
     """Get latest GitHub release tag"""
     try:
         url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
@@ -308,15 +308,26 @@ def main():
 
         logger.info(f"Processing AUR package: {aur_repo}")
         metadata = clone_and_parse(pkg_name, aur_repo)
+        if not metadata:
+            logger.error(f"Failed to clone and parse AUR package: {aur_repo}")
+            return
         display_metadata(metadata)
 
         logger.info("Checking for latest Github release version...")
         owner, repo = metadata["owner_name"], metadata["repo_name"]
-        latest_tag: str = get_latest_github_release_tag(owner, repo)
+        if not owner or not repo:
+            logger.error(f"Owner({owner}) or repo({repo}) not found in metadata")
+            return
+
+        latest_tag: str | None = get_latest_github_release_tag(owner, repo)
+        if not latest_tag:
+            logger.error(f"Failed to get latest Github release tag for owner({owner}) and repo({repo})")
+            return
+
         current_version, new_version = metadata.get("pkgver"), latest_tag.lstrip("v")
         if new_version == current_version:
             logger.info(
-                f"Newest Github version({new_version}) and current PKGBUILD version({current_version}) are same, quitting." # noqa: E501
+                f"Newest Github version({new_version}) and current PKGBUILD version({current_version}) are exactly same, quitting."  # noqa: E501
             )
             return
 
@@ -324,6 +335,9 @@ def main():
             calculate_sha256(owner, repo, latest_tag),
             calculate_commit(owner, repo, latest_tag),
         )
+        if not new_sha_hash or not new_commit_hash:
+            logger.error(f"Failed to calculate sha256 or commit hash for release tag({latest_tag})")
+            return
 
         ## duplicate
         for filename in ["PKGBUILD", ".SRCINFO"]:
