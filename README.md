@@ -4,6 +4,9 @@
 [![AUR Sync Status](https://img.shields.io/github/actions/workflow/status/occamist/pauron/update-aur-packages.yaml?label=Syncing%20My%20AUR)](https://github.com/occamist/pauron/actions/workflows/update-aur-packages.yaml)
 [![License](https://img.shields.io/github/license/occamist/pauron)](https://github.com/occamist/pauron/blob/main/LICENSE)
 
+> [!WARNING]  
+> I no longer support AUR and any related usage of AUR after [the malicious attack](https://archlinux.org/news/active-aur-malicious-packages-incident/) of 1500 packages, this highlighted someone can poison the dependencies, therefore I am abandoning this bot project.
+
 Pauron is an automation bot for AUR (Arch User Repository). You can think it of like watcher for github releases. The name emerges from Sauron but with "P" beginning. 
 
 It patches PKGBUILD & .SRCINFO files when a new release is detected at upstream then pushes to AUR repository. This way, you can maintain more AUR repositories with less effort on updating new release versions.
